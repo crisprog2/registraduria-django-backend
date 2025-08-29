@@ -49,6 +49,7 @@ Este proyecto es un backend básico en Django para la gestión de registros de p
 - `registraduria/settings.py`: Configuración del proyecto y CORS
 - `REGISTRADURIAPRO.sql`: Script SQL de referencia
 
+
 ## Endpoints disponibles
 Todos los modelos principales cuentan con endpoints tipo REST para listar, crear, consultar, actualizar y eliminar:
 
@@ -59,6 +60,14 @@ Todos los modelos principales cuentan con endpoints tipo REST para listar, crear
 - `/api/registros/` y `/api/registros/<id>/`
 
 Cada endpoint soporta los métodos GET, POST, PUT y DELETE según corresponda.
+
+## Documentación interactiva (Swagger / Redoc)
+El proyecto incluye documentación automática de la API:
+
+- Swagger UI: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
+- Redoc: [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
+
+Para aprovechar Swagger al máximo, se recomienda migrar las vistas a Django REST Framework.
 
 ## Notas
 - Por defecto usa SQLite. Si deseas usar MySQL, ajusta la configuración en `settings.py`.
