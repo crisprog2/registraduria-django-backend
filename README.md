@@ -41,14 +41,28 @@ Este proyecto es un backend básico en Django para la gestión de registros de p
 6. **Accede al admin:**
    - http://127.0.0.1:8000/admin/
 
+
 ## Estructura principal
 - `core/models.py`: Modelos principales (Departamento, Ciudad, Lugarvoto, Usuario, Persona, Registro)
-- `registraduria/settings.py`: Configuración del proyecto
+- `core/views.py`: Vistas tipo API para CRUD de todos los modelos principales
+- `core/urls.py`: Rutas de la API para todos los modelos
+- `registraduria/settings.py`: Configuración del proyecto y CORS
 - `REGISTRADURIAPRO.sql`: Script SQL de referencia
+
+## Endpoints disponibles
+Todos los modelos principales cuentan con endpoints tipo REST para listar, crear, consultar, actualizar y eliminar:
+
+- `/api/departamentos/` y `/api/departamentos/<id>/`
+- `/api/ciudades/` y `/api/ciudades/<id>/`
+- `/api/lugaresvoto/` y `/api/lugaresvoto/<id>/`
+- `/api/personas/` y `/api/personas/<id>/`
+- `/api/registros/` y `/api/registros/<id>/`
+
+Cada endpoint soporta los métodos GET, POST, PUT y DELETE según corresponda.
 
 ## Notas
 - Por defecto usa SQLite. Si deseas usar MySQL, ajusta la configuración en `settings.py`.
-- No hay endpoints personalizados ni vistas implementadas aún.
+- La API está lista para ser consumida desde un frontend React (CORS configurado para `localhost:3000` y `localhost:5173`).
 
 ## Licencia
 MIT
