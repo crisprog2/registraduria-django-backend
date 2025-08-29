@@ -1,32 +1,34 @@
+
 from rest_framework import serializers
-from .models import Departamento, Ciudad, Lugarvoto, Persona, Registro, Usuario
+from .models import Departamento, Ciudad, Lugar, Mesa, Persona, Registro
 
 class DepartamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Departamento
-        fields = ['DepartamentoId', 'DepartamentoNombre']
+        fields = '__all__'
 
 class CiudadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ciudad
-        fields = ['CiudadId', 'CiudadNombre', 'Departamento']
+        fields = '__all__'
 
-class LugarvotoSerializer(serializers.ModelSerializer):
+class LugarSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lugarvoto
-        fields = ['LugarId', 'DireccionVoto', 'MesaVoto', 'Ciudad']
+        model = Lugar
+        fields = '__all__'
 
-class UsuarioSerializer(serializers.ModelSerializer):
+
+class MesaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
-        fields = ['UsuarioId', 'Usuario', 'Password']
+        model = Mesa
+        fields = '__all__'
 
 class PersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Persona
-        fields = ['PersonaId', 'PersonaNombre', 'PersonaApellido', 'PersonaGenero', 'PersonaFechaN', 'PersonaJurado', 'Lugar', 'Usuario']
+        fields = '__all__'
 
 class RegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registro
-        fields = ['RegistrosId', 'DocId', 'Persona']
+        fields = '__all__'

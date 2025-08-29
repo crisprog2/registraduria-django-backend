@@ -36,10 +36,10 @@ Endpoints para Registro:
 """
 # Vistas DRF para todos los modelos principales
 from rest_framework import viewsets
-from .models import Departamento, Ciudad, Lugarvoto, Persona, Registro, Usuario
+from .models import Departamento, Ciudad, Lugar, Mesa, Persona, Registro
 from .serializers import (
-	DepartamentoSerializer, CiudadSerializer, LugarvotoSerializer,
-	PersonaSerializer, RegistroSerializer, UsuarioSerializer
+	DepartamentoSerializer, CiudadSerializer, LugarSerializer,
+	MesaSerializer, PersonaSerializer, RegistroSerializer
 )
 
 # ViewSets para CRUD completo de cada modelo
@@ -51,9 +51,20 @@ class CiudadViewSet(viewsets.ModelViewSet):
 	queryset = Ciudad.objects.all()
 	serializer_class = CiudadSerializer
 
-class LugarvotoViewSet(viewsets.ModelViewSet):
-	queryset = Lugarvoto.objects.all()
-	serializer_class = LugarvotoSerializer
+
+class LugarViewSet(viewsets.ModelViewSet):
+	queryset = Lugar.objects.all()
+	serializer_class = LugarSerializer
+
+class MesaViewSet(viewsets.ModelViewSet):
+	queryset = Mesa.objects.all()
+	serializer_class = MesaSerializer
+
+
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+
 
 class PersonaViewSet(viewsets.ModelViewSet):
 	queryset = Persona.objects.all()
@@ -63,7 +74,4 @@ class RegistroViewSet(viewsets.ModelViewSet):
 	queryset = Registro.objects.all()
 	serializer_class = RegistroSerializer
 
-class UsuarioViewSet(viewsets.ModelViewSet):
-	queryset = Usuario.objects.all()
-	serializer_class = UsuarioSerializer
 
