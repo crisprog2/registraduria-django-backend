@@ -1,6 +1,8 @@
 
+
 # Rutas de la API para los modelos principales de la aplicación core.
-# Cada ruta expone endpoints CRUD para los modelos Departamento, Ciudad, Lugarvoto, Persona y Registro.
+# Cada ruta expone endpoints CRUD para los modelos Departamento, Ciudad, Lugar, Mesa, Persona y Registro.
+# Las rutas se registran automáticamente usando DefaultRouter de DRF.
 
 from rest_framework.routers import DefaultRouter
 from .views import DepartamentoViewSet, CiudadViewSet, LugarViewSet, MesaViewSet, PersonaViewSet, RegistroViewSet
