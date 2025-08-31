@@ -69,21 +69,23 @@ class PersonaViewSet(viewsets.ModelViewSet):
 	@action(detail=False, methods=['get'], url_path='buscar-por-cedula')
 	def buscar_por_cedula(self, request):
 		"""
-		Endpoint personalizado para buscar una persona por cédula y retornar información relevante:
-		- Nombres y apellidos
-		- Cédula, género, jurado
-		- Dirección y mesa de votación
-		- Ciudad y departamento
+		Endpoint personalizado para buscar una persona por cédula y retornar información relevante.
+		Además, incrementa o crea el campo 'registro' en la tabla Registro cada vez que se consulta la cédula.
 		"""
 		cedula = request.query_params.get('cedula')
 		if not cedula:
 			return Response({'error': 'Debe proporcionar una cédula.'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
-			persona = Persona.objects.select_related(
-				'cod_Mesa',
-			).get(cedula=cedula)
+			persona = Persona.objects.select_related('cod_Mesa').get(cedula=cedula)
 		except Persona.DoesNotExist:
 			return Response({'error': 'Persona no encontrada.'}, status=status.HTTP_404_NOT_FOUND)
+
+		# Incrementar o crear el registro
+		from .models import Registro
+		registro_obj, created = Registro.objects.get_or_create(cedula=persona, defaults={'registro': 1})
+		if not created:
+			registro_obj.registro += 1
+			registro_obj.save()
 
 		# Obtener lugar, ciudad y departamento a través de la mesa
 		lugar = None
