@@ -5,9 +5,10 @@ class Departamento(models.Model):
 	"""
 	Modelo de Departamento.
 	Representa un departamento administrativo de Colombia.
+
 	Campos:
-	- cod_Departamento: Código único del departamento (PK).
-	- departamento: Nombre del departamento.
+		cod_Departamento (CharField): Código único del departamento (PK).
+		departamento (CharField): Nombre del departamento.
 	"""
 	cod_Departamento = models.CharField(max_length=255, primary_key=True)
 	departamento = models.CharField(max_length=255)
@@ -20,10 +21,11 @@ class Ciudad(models.Model):
 	"""
 	Modelo de Ciudad.
 	Representa una ciudad asociada a un departamento.
+
 	Campos:
-	- cod_Ciudad: Código único de la ciudad (PK).
-	- ciudad: Nombre de la ciudad.
-	- cod_Departamento: FK al departamento correspondiente.
+		cod_Ciudad (CharField): Código único de la ciudad (PK).
+		ciudad (CharField): Nombre de la ciudad.
+		cod_Departamento (ForeignKey): Departamento al que pertenece la ciudad.
 	"""
 	cod_Ciudad = models.CharField(max_length=255, primary_key=True)
 	ciudad = models.CharField(max_length=255)
@@ -37,11 +39,12 @@ class Lugar(models.Model):
 	"""
 	Modelo de Lugar de Votación.
 	Representa un lugar físico donde se vota, asociado a una ciudad.
+
 	Campos:
-	- cod_lugar: Código único del lugar (PK).
-	- nombre_lugar: Nombre del lugar.
-	- direccion: Dirección física.
-	- cod_Ciudad: FK a la ciudad correspondiente.
+		cod_lugar (CharField): Código único del lugar (PK).
+		nombre_lugar (CharField): Nombre del lugar.
+		direccion (CharField): Dirección física.
+		cod_Ciudad (ForeignKey): Ciudad a la que pertenece el lugar.
 	"""
 	cod_lugar = models.CharField(max_length=255, primary_key=True)
 	nombre_lugar = models.CharField(max_length=255)
@@ -55,10 +58,11 @@ class Mesa(models.Model):
 	"""
 	Modelo de Mesa de Votación.
 	Representa una mesa dentro de un lugar de votación.
+
 	Campos:
-	- cod_Mesa: ID único de la mesa (PK).
-	- mesa: Número de la mesa.
-	- cod_lugar: FK al lugar de votación.
+		cod_Mesa (BigAutoField): ID único de la mesa (PK).
+		mesa (IntegerField): Número de la mesa.
+		cod_lugar (ForeignKey): Lugar de votación al que pertenece la mesa.
 	"""
 	cod_Mesa = models.BigAutoField(primary_key=True)
 	mesa = models.IntegerField()
@@ -70,6 +74,7 @@ class Mesa(models.Model):
 class Usuario(models.Model):
 	"""
 	Modelo de Usuario (actualmente no utilizado).
+	Reservado para futuras implementaciones de autenticación.
 	"""
 
 	def __str__(self):
@@ -80,13 +85,14 @@ class Persona(models.Model):
 	"""
 	Modelo de Persona.
 	Representa a una persona registrada para votar.
+
 	Campos:
-	- cedula: Número de cédula (PK).
-	- primer_Nombre, segundo_Nombre, primer_Apellido, segundo_Apellido: Nombres y apellidos.
-	- genero: Género de la persona.
-	- edad: Edad de la persona.
-	- jurado: Indica si es jurado de votación.
-	- cod_Mesa: FK a la mesa de votación asignada.
+		cedula (IntegerField): Número de cédula (PK).
+		primer_Nombre, segundo_Nombre, primer_Apellido, segundo_Apellido (CharField): Nombres y apellidos.
+		genero (CharField): Género de la persona.
+		edad (IntegerField): Edad de la persona.
+		jurado (CharField): Indica si es jurado de votación.
+		cod_Mesa (ForeignKey): Mesa de votación asignada.
 	"""
 	cedula = models.IntegerField(primary_key=True)
 	primer_Nombre = models.CharField(max_length=255)
@@ -106,11 +112,12 @@ class Persona(models.Model):
 class Registro(models.Model):
 	"""
 	Modelo de Registro.
-	Representa el registro de una persona (por ejemplo, su inscripción electoral).
+	Representa el registro de una persona (por ejemplo, su inscripción electoral o consulta).
+
 	Campos:
-	- cod_Registro: ID único del registro (PK).
-	- registro: Número de registro.
-	- cedula: FK a la persona registrada.
+		cod_Registro (BigAutoField): ID único del registro (PK).
+		registro (IntegerField): Número de registros/consultas.
+		cedula (ForeignKey): Persona asociada al registro.
 	"""
 	cod_Registro = models.BigAutoField(primary_key=True)
 	registro = models.IntegerField()

@@ -1,11 +1,13 @@
 
+
 """
 Configuración de URLs principal para el proyecto Registraduría.
 
 Incluye rutas para:
-- Admin de Django
-- API REST (core)
-- Documentación Swagger y Redoc
+    - Admin de Django
+    - API REST (core)
+    - Documentación Swagger y Redoc
+    - Cualquier otra app futura
 """
 
 

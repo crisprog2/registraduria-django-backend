@@ -5,6 +5,7 @@ from .models import Departamento, Ciudad, Lugar, Mesa, Persona, Registro
 class DepartamentoSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Departamento.
+    Convierte instancias de Departamento a JSON y viceversa.
     """
     class Meta:
         model = Departamento
@@ -14,6 +15,7 @@ class CiudadSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Ciudad.
     Devuelve el nombre del departamento en vez del código.
+    Facilita la visualización de la relación ciudad-departamento.
     """
     departamento = serializers.SerializerMethodField()
 
@@ -28,6 +30,7 @@ class LugarSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Lugar de Votación.
     Devuelve el nombre de la ciudad asociada.
+    Facilita la visualización de la relación lugar-ciudad.
     """
     ciudad = serializers.SerializerMethodField()
 
@@ -43,6 +46,7 @@ class MesaSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Mesa de Votación.
     Devuelve el nombre del lugar asociado.
+    Facilita la visualización de la relación mesa-lugar.
     """
     lugar = serializers.SerializerMethodField()
 
@@ -56,7 +60,7 @@ class MesaSerializer(serializers.ModelSerializer):
 class PersonaSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Persona.
-    Solo muestra los campos propios de la persona.
+    Serializa los datos básicos de la persona, sin relaciones anidadas.
     """
     class Meta:
         model = Persona
@@ -65,7 +69,7 @@ class PersonaSerializer(serializers.ModelSerializer):
 class RegistroSerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo Registro.
-    Solo muestra el código, número de registro y cédula de la persona.
+    Serializa el código, número de registros y la cédula asociada.
     """
     class Meta:
         model = Registro
