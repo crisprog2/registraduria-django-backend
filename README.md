@@ -15,7 +15,7 @@ Backend robusto y documentado para la gestión de registros electorales, lugares
 ## Requisitos
 - Python 3.8+ (recomendado 3.13+)
 - pip
-- (Opcional) MySQL si se desea usar otra base de datos
+- PostgreSQL
 
 ## Instalación y uso rápido
 1. **Clona el repositorio y entra al directorio:**
@@ -32,15 +32,25 @@ Backend robusto y documentado para la gestión de registros electorales, lugares
    ```bash
    pip install -r requirements.txt
    ```
-4. **Aplica migraciones:**
+4. **Configura la base de datos PostgreSQL:**
+   - Crea una base de datos y un usuario en PostgreSQL.
+   - Crea un archivo `.env` en la raíz del proyecto con:
+     ```env
+     DB_NAME=nombre_de_tu_db
+     DB_USER=tu_usuario
+     DB_PASSWORD=tu_contraseña
+     DB_HOST=localhost
+     DB_PORT=5432
+     ```
+5. **Aplica migraciones:**
    ```bash
    python manage.py migrate
    ```
-5. **Ejecuta el servidor:**
+6. **Ejecuta el servidor:**
    ```bash
    .venv/bin/python manage.py runserver
    ```
-6. **Accede al admin:**
+7. **Accede al admin:**
    - http://127.0.0.1:8000/admin/
 
 ## Estructura del proyecto
@@ -84,12 +94,10 @@ El proyecto incluye documentación automática de la API y todos los endpoints y
 Los endpoints de reportes utilizan agregaciones ORM para devolver la cantidad de consultas realizadas agrupadas por ciudad, género o edad, facilitando el análisis estadístico desde el frontend.
 
 ## Notas técnicas
-- Por defecto usa SQLite. Si deseas usar MySQL, ajusta la configuración en `settings.py`.
+- Ahora la base de datos por defecto es PostgreSQL. La configuración se realiza mediante variables de entorno en el archivo `.env` (ver ejemplo arriba).
+- El archivo `db.sqlite3` puede eliminarse si ya no lo necesitas.
 - La API está lista para ser consumida desde un frontend React (CORS configurado para `localhost:3000` y `localhost:5173`).
-- Para poblar los departamentos y ciudades de Colombia, ejecuta el script `departamentos_ciudades_colombia.sql` directamente sobre la base de datos SQLite:
-   ```bash
-   sqlite3 db.sqlite3 < departamentos_ciudades_colombia.sql
-   ```
+- Para poblar los departamentos y ciudades de Colombia en PostgreSQL, puedes adaptar el script `departamentos_ciudades_colombia.sql` o migrar los datos manualmente.
 
 ## Licencia
 MIT
