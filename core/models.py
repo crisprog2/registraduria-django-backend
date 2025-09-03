@@ -1,4 +1,6 @@
+
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 
 class Departamento(models.Model):
@@ -71,14 +73,42 @@ class Mesa(models.Model):
 	def __str__(self):
 		return f"Mesa {self.mesa} ({self.cod_Mesa})"
 
-class Usuario(models.Model):
+
+# Manager personalizado para el modelo Usuario
+class UsuarioManager(BaseUserManager):
+	def create_user(self, email, password=None, **extra_fields):
+		if not email:
+			raise ValueError('El email es obligatorio')
+		email = self.normalize_email(email)
+		user = self.model(email=email, **extra_fields)
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
+
+	def create_superuser(self, email, password=None, **extra_fields):
+		extra_fields.setdefault('is_staff', True)
+		extra_fields.setdefault('is_superuser', True)
+		return self.create_user(email, password, **extra_fields)
+
+# Modelo de usuario personalizado
+class Usuario(AbstractBaseUser, PermissionsMixin):
 	"""
-	Modelo de Usuario (actualmente no utilizado).
-	Reservado para futuras implementaciones de autenticación.
+	Modelo de Usuario personalizado para autenticación.
+	Utiliza email como identificador principal.
 	"""
+	email = models.EmailField(unique=True, max_length=255)
+	nombre = models.CharField(max_length=255, blank=True)
+	is_active = models.BooleanField(default=True)
+	is_staff = models.BooleanField(default=False)
+	date_joined = models.DateTimeField(auto_now_add=True)
+
+	objects = UsuarioManager()
+
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = []
 
 	def __str__(self):
-		return self.Usuario
+		return self.email
 
 
 class Persona(models.Model):
@@ -113,6 +143,7 @@ class Registro(models.Model):
 	"""
 	Modelo de Registro.
 	Representa el registro de una persona (por ejemplo, su inscripción electoral o consulta).
+
 
 	Campos:
 		cod_Registro (BigAutoField): ID único del registro (PK).

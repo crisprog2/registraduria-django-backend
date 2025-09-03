@@ -2,6 +2,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from django.db.models import Sum
+from rest_framework.permissions import AllowAny
 
 # ViewSet para reportes personalizados
 class ReporteViewSet(viewsets.ViewSet):
@@ -125,7 +126,6 @@ class PersonaViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Persona.objects.all()
 	serializer_class = PersonaSerializer
-
 	@swagger_auto_schema(
 		manual_parameters=[
 			openapi.Parameter(
@@ -133,7 +133,7 @@ class PersonaViewSet(viewsets.ModelViewSet):
 			)
 		]
 	)
-	@action(detail=False, methods=['get'], url_path='buscar-por-cedula')
+	@action(detail=False, methods=['get'], url_path='buscar-por-cedula', permission_classes=[AllowAny])
 	def buscar_por_cedula(self, request):
 		"""
 		Endpoint personalizado para buscar una persona por cédula y retornar información relevante.
