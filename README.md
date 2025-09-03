@@ -84,20 +84,58 @@ Todos los modelos principales cuentan con endpoints tipo REST para listar, crear
 
 Cada endpoint soporta los métodos GET, POST, PUT/PATCH y DELETE según corresponda.
 
-## Documentación interactiva (Swagger)
-El proyecto incluye documentación automática de la API y todos los endpoints y métodos están documentados y probables desde la interfaz Swagger:
 
-- Swagger UI: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
-- Redoc: [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
+## Ejemplo de uso de endpoints (con curl)
 
-## Lógica de reportes agregados
-Los endpoints de reportes utilizan agregaciones ORM para devolver la cantidad de consultas realizadas agrupadas por ciudad, género o edad, facilitando el análisis estadístico desde el frontend.
+### 1. Autenticación y obtención de token JWT
 
-## Notas técnicas
-- Ahora la base de datos por defecto es PostgreSQL. La configuración se realiza mediante variables de entorno en el archivo `.env` (ver ejemplo arriba).
-- El archivo `db.sqlite3` puede eliminarse si ya no lo necesitas.
-- La API está lista para ser consumida desde un frontend React (CORS configurado para `localhost:3000` y `localhost:5173`).
-- Para poblar los departamentos y ciudades de Colombia en PostgreSQL, puedes adaptar el script `departamentos_ciudades_colombia.sql` o migrar los datos manualmente.
+```bash
+# Obtener token JWT
+curl -X POST http://127.0.0.1:8000/api/token/ \
+   -H "Content-Type: application/json" \
+   -d '{"email": "usuario@correo.com", "password": "tu_contraseña"}'
+# Respuesta:
+# {"refresh": "<refresh_token>", "access": "<access_token>"}
+```
 
-## Licencia
-MIT
+### 2. Consumir endpoint protegido con JWT
+
+```bash
+curl -X GET http://127.0.0.1:8000/api/departamentos/ \
+   -H "Authorization: Bearer <access_token>"
+```
+
+### 3. Endpoint público: buscar persona por cédula
+
+```bash
+curl -X GET "http://127.0.0.1:8000/api/personas/buscar-por-cedula/?cedula=123456789"
+```
+
+### 4. Crear un nuevo registro (ejemplo POST)
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/ciudades/ \
+   -H "Authorization: Bearer <access_token>" \
+   -H "Content-Type: application/json" \
+   -d '{"cod_Ciudad": "001", "ciudad": "Bogotá", "cod_Departamento": "11"}'
+```
+
+### 5. Refrescar el token JWT
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/token/refresh/ \
+   -H "Content-Type: application/json" \
+   -d '{"refresh": "<refresh_token>"}'
+# Respuesta:
+# {"access": "<nuevo_access_token>"}
+```
+
+## Autenticación y seguridad
+
+La autenticación se realiza mediante JWT (JSON Web Token). Todos los endpoints (excepto `/api/personas/buscar-por-cedula/` y los de obtención/refresh de token) requieren el header:
+
+```
+Authorization: Bearer <access_token>
+```
+
+Para obtener el token, usa el endpoint `/api/token/` enviando email y contraseña. Para refrescar el access token, usa `/api/token/refresh/`.
